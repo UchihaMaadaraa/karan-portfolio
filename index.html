@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Making of a Systems Architect — Karan Gupta's Story</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+      --bg: #0f0d0b;
+      --bg-card: #171410;
+      --bg-card-alt: #1d1915;
+      --border: #2a2118;
+      --border-glow: #5c3a1a;
+      --accent: #e8874a;
+      --accent-2: #f5a623;
+      --accent-warm: #e8874a;
+      --accent-warm-2: #f5a623;
+      --accent-green: #6dbf8a;
+      --accent-red: #e87070;
+      --text-primary: #f5ede4;
+      --text-secondary: #a88c76;
+      --text-muted: #5a3f2e;
+      --level-color-1: #e8874a;
+      --level-color-2: #6dbf8a;
+      --level-color-3: #b07de8;
+      --level-color-4: #f5a623;
+      --level-color-5: #e87070;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Pixel grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(232, 135, 74, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 135, 74, 0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid var(--border-glow);
+      border-radius: 999px;
+      background: rgba(79, 61, 106, 0.2);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f5ede4 0%, #e8874a 50%, #f5a623 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin: 0 auto 32px;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-meta-item span:first-child {
+      color: var(--accent-warm);
+    }
+
+    /* ── INTRO BLOCK ── */
+    .intro-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--level-color-1), var(--accent), var(--level-color-5));
+    }
+
+    .intro-block p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .intro-block p + p {
+      margin-top: 16px;
+    }
+
+    .intro-block strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      text-align: center;
+      margin: 64px 0 40px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .section-header p {
+      margin-top: 12px;
+      color: var(--text-secondary);
+      font-size: 15px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── LEVEL CARDS ── */
+    .level-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .level-card:hover {
+      border-color: var(--border-glow);
+    }
+
+    .level-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .level-card.l1::before { background: var(--level-color-1); }
+    .level-card.l2::before { background: var(--level-color-2); }
+    .level-card.l3::before { background: var(--level-color-3); }
+    .level-card.l4::before { background: var(--level-color-4); }
+    .level-card.l5::before { background: var(--level-color-5); }
+
+    .level-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .level-badge {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+      border: 1px solid;
+    }
+
+    .level-badge .lv-num {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .l1 .level-badge { background: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.4); color: var(--level-color-1); }
+    .l2 .level-badge { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.4); color: var(--level-color-2); }
+    .l3 .level-badge { background: rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.4); color: var(--level-color-3); }
+    .l4 .level-badge { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.4); color: var(--level-color-4); }
+    .l5 .level-badge { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.4); color: var(--level-color-5); }
+
+    .level-title-block h3 {
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .level-unlock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .level-unlock span {
+      color: var(--accent-warm);
+    }
+
+    .level-body p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .level-body p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .level-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .level-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: rgba(167, 139, 250, 0.12);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--accent);
+    }
+
+    /* Quote block */
+    .quote-block {
+      background: var(--bg-card-alt);
+      border-left: 3px solid var(--border-glow);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '"';
+      position: absolute;
+      top: -8px;
+      left: 16px;
+      font-size: 64px;
+      color: var(--border-glow);
+      font-family: Georgia, serif;
+      line-height: 1;
+      opacity: 0.6;
+    }
+
+    .quote-block p {
+      font-size: 15px;
+      color: var(--text-secondary) !important;
+      font-style: italic;
+      line-height: 1.7;
+      padding-top: 8px;
+      margin-bottom: 0 !important;
+    }
+
+    .quote-attr {
+      display: block;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* Skills checklist */
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .skill-check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .skill-check::before {
+      content: '✓';
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .l1 .skill-check::before { color: var(--level-color-1); }
+    .l2 .skill-check::before { color: var(--level-color-2); }
+    .l3 .skill-check::before { color: var(--level-color-3); }
+    .l4 .skill-check::before { color: var(--level-color-4); }
+    .l5 .skill-check::before { color: var(--level-color-5); }
+
+    /* ── STAT BAR ── */
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      min-width: 60px;
+    }
+
+    .stat-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    /* ── BUILD LOG ── */
+    .build-log {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .build-log::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent), var(--level-color-2));
+    }
+
+    .build-log-header {
+      margin-bottom: 40px;
+    }
+
+    .build-log-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .build-log-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Flow diagram */
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 40px;
+      padding: 24px;
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .flow-node {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .flow-node-icon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .flow-node-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .flow-node.fn-perceive .flow-node-icon  { color: #e8874a; border-color: rgba(232,135,74,0.35); background: rgba(232,135,74,0.08); }
+    .flow-node.fn-think    .flow-node-icon  { color: #b07de8; border-color: rgba(176,125,232,0.35); background: rgba(176,125,232,0.08); }
+    .flow-node.fn-act      .flow-node-icon  { color: #f5a623; border-color: rgba(245,166,35,0.35); background: rgba(245,166,35,0.08); }
+    .flow-node.fn-learn    .flow-node-icon  { color: #6dbf8a; border-color: rgba(109,191,138,0.35); background: rgba(109,191,138,0.08); }
+    .flow-node.fn-repeat   .flow-node-icon  { color: var(--text-muted); border-color: var(--border); background: transparent; font-style: italic; }
+
+    .flow-arrow {
+      flex-shrink: 0;
+      padding: 0 10px;
+      color: var(--text-muted);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Build entries */
+    .build-entries {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .build-entry {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .build-entry:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .build-entry:first-child {
+      padding-top: 0;
+    }
+
+    .build-entry-meta {
+      padding-top: 2px;
+    }
+
+    .build-entry-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+      margin-bottom: 6px;
+    }
+
+    .build-entry-tag.t-built      { color: #e8874a; border-color: rgba(232,135,74,0.3); background: rgba(232,135,74,0.07); }
+    .build-entry-tag.t-trained    { color: #b07de8; border-color: rgba(176,125,232,0.3); background: rgba(176,125,232,0.07); }
+    .build-entry-tag.t-shipped    { color: #6dbf8a; border-color: rgba(109,191,138,0.3); background: rgba(109,191,138,0.07); }
+    .build-entry-tag.t-formalized { color: #f5a623; border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.07); }
+
+    .build-entry-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .build-entry-content h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .build-entry-content p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .build-entry-content p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Tools used section */
+    .tools-used {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    .tools-used-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .tools-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tool-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-card-alt);
+      letter-spacing: 0.03em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .tool-pill:hover {
+      border-color: var(--border-glow);
+      color: var(--text-primary);
+    }
+
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 48px 0;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-glow);
+    }
+
+    .stat-card-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .stat-card-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CLOSING ── */
+    .closing-block {
+      text-align: center;
+      padding: 64px 0;
+      position: relative;
+    }
+
+    .closing-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+    }
+
+    .closing-quote {
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.45;
+      max-width: 680px;
+      margin: 0 auto 20px;
+    }
+
+    .closing-quote em {
+      background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: normal;
+    }
+
+    .closing-attr {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── CTA ── */
+    .cta-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      padding: 48px;
+      margin: 0 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-block::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(56,189,248,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-block::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-block h2 {
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .cta-block p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #b85c1e, #e8874a);
+      color: #fff;
+      border-color: #c96828;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #c96828, #f5a623);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(232, 135, 74, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border-color: var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-glow);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .cta-contact {
+      margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 48px 0;
+    }
+
+    /* ── TUI BOOT SCREEN ── */
+    .boot-section {
+      margin: 64px 0;
+    }
+
+    .boot-section .section-label {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .terminal-chrome {
+      background: #0b0906;
+      border: 1px solid #2a1c0e;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(232,135,74,0.07),
+        0 24px 64px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+      position: relative;
+    }
+
+    .terminal-titlebar {
+      background: #0e0b08;
+      border-bottom: 1px solid #231810;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .terminal-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal-dots .dot-red    { background: #ff5f57; }
+    .terminal-dots .dot-yellow { background: #febc2e; }
+    .terminal-dots .dot-green  { background: #28c840; }
+
+    .terminal-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #6b4f36;
+      letter-spacing: 0.06em;
+      flex: 1;
+      text-align: center;
+    }
+
+    .terminal-body {
+      padding: 24px 28px 28px;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    /* Scanline CRT effect */
+    .terminal-body::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Subtle ember ambient glow */
+    .terminal-chrome::before {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 60px;
+      background: radial-gradient(ellipse, rgba(232,135,74,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .tui-pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #c4956e;
+      white-space: pre;
+      margin: 0;
+      tab-size: 4;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* TUI color classes */
+    .tui-title    { color: #f5a623; font-weight: 700; letter-spacing: 0.18em; }
+    .tui-rule     { color: #3d2510; }
+    .tui-meta     { color: #7a5438; }
+    .tui-box      { color: #3d2510; }
+    .tui-label    { color: #7a5438; }
+    .tui-green    { color: #6dbf8a; }
+    .tui-red      { color: #e87070; }
+    .tui-cyan     { color: #e8874a; }
+    .tui-amber    { color: #f5a623; }
+    .tui-dim      { color: #3d2510; }
+    .tui-white    { color: #f0dcc8; }
+    .tui-section  { color: #e8874a; font-weight: 600; }
+    .tui-tag      { color: #c47a3a; }
+    .tui-val      { color: #6dbf8a; }
+    .tui-warning  { color: #f5a623; }
+
+    @media (max-width: 720px) {
+      .terminal-body {
+        padding: 16px 16px 20px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tui-pre {
+        font-size: 11px;
+      }
+      .flow-diagram {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .level-card { padding: 28px 20px; }
+      .build-log { padding: 28px 20px; }
+      .cta-block { padding: 32px 20px; }
+      .flow-diagram { gap: 0; padding: 16px; }
+      .flow-arrow { padding: 0 6px; font-size: 14px; }
+      .build-entry { grid-template-columns: 1fr; gap: 8px; }
+      .build-entry-meta { display: flex; align-items: center; gap: 10px; }
+      .level-header { flex-direction: column; gap: 12px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-badge">Character Profile · Systems Architect &amp; Builder</div>
+    <h1>The Making of a Systems Architect —<br>Karan Gupta's Story</h1>
+    <p class="subtitle">
+      Building autonomous systems that think, remember, and run themselves — from first principles, on a MacBook Air M1, one layer at a time.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span>▸</span> Systems Architect · Builder</div>
+      <div class="hero-meta-item"><span>▸</span> Singularity · 49 GB autonomous stack</div>
+      <div class="hero-meta-item"><span>▸</span> ~140,000 LOC shipped</div>
+      <div class="hero-meta-item"><span>▸</span> 117M param brain · built from scratch</div>
+    </div>
+  </header>
+
+  <!-- ── INTRO ── -->
+  <div class="intro-block">
+    <p>
+      <strong>Karan builds systems that think, remember, and run themselves.</strong> Not wrappers around existing tools — actual ground-up architectures with their own memory layers, inference engines, process immortality daemons, and CLI ecosystems. The flagship is the <strong>Singularity system</strong>: a 49 GB autonomous cognitive stack running on a MacBook Air M1, accumulating expertise the way a senior engineer does — through experience, reinforcement, and structured forgetting of what doesn't matter.
+    </p>
+    <p>
+      He is also the person who will sit with a six-hour CI failure until he finds the four lines that caused it. His professional work spans test automation across Selenium, Cypress, Playwright, Appium, Espresso, and XCUITest — and that debugging rigor is exactly what informed how he built Singularity's RCA pattern engine: 126 failure taxonomies, formalized from real incidents, queryable at 2am. The two things have always fed each other.
+    </p>
+    <p>
+      This is how he got there.
+    </p>
+  </div>
+
+  <!-- ── SYSTEM STATS ── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-value">26</div>
+      <div class="stat-card-label">Singularity CLIs Built</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">117M</div>
+      <div class="stat-card-label">Parameters · JUDGE BrainV2</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">49 GB</div>
+      <div class="stat-card-label">Singularity System Size</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">44K+</div>
+      <div class="stat-card-label">Episodic Memories · Cognition Core</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">140K+</div>
+      <div class="stat-card-label">Lines of Code Shipped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">126</div>
+      <div class="stat-card-label">RCA Patterns Mapped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">72</div>
+      <div class="stat-card-label">Learned Instincts · Active</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-value">23</div>
+      <div class="stat-card-label">System Organs · Singularity Body</div>
+    </div>
+  </div>
+
+  <!-- ── TUI BOOT SCREEN ── -->
+  <div class="boot-section">
+    <div class="section-label">// System Boot Sequence</div>
+    <div class="terminal-chrome">
+      <div class="terminal-titlebar">
+        <div class="terminal-dots">
+          <span class="dot-red"></span>
+          <span class="dot-yellow"></span>
+          <span class="dot-green"></span>
+        </div>
+        <div class="terminal-title">singularity — boot</div>
+      </div>
+      <div class="terminal-body">
+        <pre class="tui-pre"><span class="tui-title">S I N G U L A R I T Y</span>
+<span class="tui-rule">━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="tui-meta">The Body — a living system that perceives, acts, remembers, and holds itself accountable.</span>
+
+<span class="tui-box">╭─── </span><span class="tui-amber">Senses</span><span class="tui-box">  ─────────────────────────────╮    ╭─── </span><span class="tui-cyan">Arms</span><span class="tui-box">  ──────────────────────────────╮</span>
+<span class="tui-box">│  </span><span class="tui-meta">Perceive the world around you.</span><span class="tui-box">          │    │  </span><span class="tui-meta">Act on what you perceive.</span><span class="tui-box">              │</span>
+<span class="tui-box">│                                         │    │                                       │</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> third-eye   </span><span class="tui-tag">self-awareness         </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> forge      </span><span class="tui-tag">build anything          </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> scan        </span><span class="tui-tag">security awareness     </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> herald     </span><span class="tui-tag">communicate outward     </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> recon       </span><span class="tui-tag">intelligence gathering  </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> canvas     </span><span class="tui-tag">create and visualize    </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> sentinel    </span><span class="tui-tag">infrastructure health  </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> guardian   </span><span class="tui-tag">protect and comply      </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> turbo       </span><span class="tui-tag">performance sensing    </span><span class="tui-box">│    │                                       │</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> aegis       </span><span class="tui-tag">threat detection       </span><span class="tui-box">│    ╰───────────────────────────────────────╯</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> vault       </span><span class="tui-tag">financial awareness    </span><span class="tui-box">│</span>
+<span class="tui-box">╰─────────────────────────────────────────╯</span>
+
+<span class="tui-box">╭─── </span><span class="tui-section">Memory</span><span class="tui-box">  ────────────────────────────╮    ╭─── </span><span class="tui-warning">Spine</span><span class="tui-box">  ──────────────────────────────╮</span>
+<span class="tui-box">│  </span><span class="tui-meta">Remember everything that matters.</span><span class="tui-box">       │    │  </span><span class="tui-meta">Stay accountable. Keep running.</span><span class="tui-box">        │</span>
+<span class="tui-box">│                                         │    │                                       │</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> engram      </span><span class="tui-tag">temporal knowledge     </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> ledger     </span><span class="tui-tag">audit trail, rollback   </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> atlas       </span><span class="tui-tag">connected knowledge    </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> LIFE       </span><span class="tui-tag">process immortality     </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> cognition   </span><span class="tui-tag">episodic + semantic    </span><span class="tui-box">│    │  </span><span class="tui-green">◆</span><span class="tui-white"> death      </span><span class="tui-tag">activity awareness      </span><span class="tui-box">│</span>
+<span class="tui-box">│  </span><span class="tui-green">◆</span><span class="tui-white"> mind-palace </span><span class="tui-tag">structured truth       </span><span class="tui-box">│    │                                       │</span>
+<span class="tui-box">│                                         │    ╰───────────────────────────────────────╯</span>
+<span class="tui-box">╰─────────────────────────────────────────╯</span>
+
+<span class="tui-dim">Every organ is a tool. Every tool learns. The body grows.</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LEVELS ── -->
+  <div class="section-header">
+    <div class="section-label">// Character Progression</div>
+    <h2>Five Levels. One Builder.</h2>
+    <p>Each level was not a promotion. It was a system that needed to exist, so he built it from scratch.</p>
+  </div>
+
+  <!-- Level 1 -->
+  <div class="level-card l1">
+    <div class="level-header">
+      <div class="level-badge">
+        <span>LVL</span>
+        <span class="lv-num">1</span>
+      </div>
+      <div class="level-title-block">
+        <h3>The Vision — Build the Thing That Builds</h3>
+        <div class="level-unlock">UNLOCK CONDITION: <span>When the tool you need doesn't exist anywhere on the internet</span></div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        The <strong>Singularity system</strong> started as a question: what if a software system could accumulate expertise the way a human engineer does — through experience, not just configuration? The answer Karan arrived at was not a wrapper around an existing tool. It was a ground-up architecture: 49 GB of interconnected systems running on a MacBook Air M1, all connected by design.
+      </p>
+      <p>
+        The core is the <strong>Singularity Engine</strong> (4,399 LOC): a decision router, goal engine, initiative loop, and constraint checker. Around it: a <strong>Gateway</strong> with multi-channel routing across Slack, WhatsApp, and Telegram, handling 10 active personas with a strict DM threading protocol. An <strong>infrastructure layer</strong> of 47 scripts (9,677 LOC) covers the learning daemons, memory bridge, and 26 keychain-managed credentials. The <strong>Mind Palace</strong> — a structured knowledge architecture following a divergence → convergence → ultra-instinct workflow — is where raw information becomes operational truth.
+      </p>
+      <p>
+        To make it learn, he built <strong>6 auto-learning hooks</strong> that capture every session start and end, every file edit, every tool use, every MCP interaction. The hooks record what happened. Manual <code>memory-bridge.py learn</code> calls record why. Both inputs feed into the cognition layer. The system doesn't just run — it gets better at running.
+      </p>
+
+      <div class="quote-block">
+        <p>I wanted something that remembered what worked. Not just logs — actual structured memory that decays the wrong things and reinforces the right ones. I built a whole episodic memory system because nothing out there did what I needed. That's sort of the pattern with everything here.</p>
+        <span class="quote-attr">— Karan Gupta</span>
+      </div>
+
+      <div class="skills-list">
+        <div class="skill-check">Autonomous system architecture</div>
+        <div class="skill-check">Multi-persona AI gateway design</div>
+        <div class="skill-check">Hook-based auto-learning pipelines</div>
+        <div class="skill-check">Swift / SwiftUI macOS app dev (native SwiftUI)</div>
+        <div class="skill-check">Knowledge architecture (divergence→ultra-instinct)</div>
+        <div class="skill-check">26 custom CLI tools (ULTRON Arsenal)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 2 -->
+  <div class="level-card l2">
+    <div class="level-header">
+      <div class="level-badge">
+        <span>LVL</span>
+        <span class="lv-num">2</span>
+      </div>
+      <div class="level-title-block">
+        <h3>The Neural Architect — Train It From Scratch</h3>
+        <div class="level-unlock">UNLOCK CONDITION: <span>When pretrained models aren't enough because you need to understand the loss curve</span></div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        Karan did not plug in a pretrained model and call it an AI system. He trained one. <strong>JUDGE BrainV2</strong> is a 117M-parameter transformer built with RoPE positional encoding, SwiGLU activations, and RMSNorm — architectural choices he made deliberately, for specific reasons. 12 layers. 94 saved checkpoints. A consciousness framework, a mind palace integration, and a soul subsystem. It runs inference on a MacBook Air M1 alongside everything else. The loss curve started at 8.3 and came down to 0.51. That is not a pre-trained checkpoint — that is a training run.
+      </p>
+      <p>
+        The sibling brain, <strong>ITACHI</strong>, targets 240M parameters (scaling to 730M at Mangekyo stage) with 24 layers architected specifically for deep reasoning tasks. While JUDGE handles fast inference and decision routing, ITACHI is designed for the harder problems — the kind where you need to hold more context, reason across more steps, and resist getting confident too quickly. The architectural split between them is intentional: two reasoning styles, not one.
+      </p>
+      <p>
+        Supporting both: a <strong>Maadaraa</strong> Swift/SwiftUI desktop app (native SwiftUI) with real-time training visualization, a CognitionStore, hooks setup, and configuration management under <code>~/.m8a/</code>. The visualization layer isn't a dashboard bolted on after the fact — it was built in parallel, because Karan needed to see what the brain was doing during training to make good decisions about the architecture.
+      </p>
+
+      <div class="quote-block">
+        <p>Running training on an M1 is slow. But it forces you to understand exactly what's happening, because you can't brute-force your way through it. You have to be right about the architecture before you start. I think that constraint made me a better ML engineer than a bigger GPU would have.</p>
+        <span class="quote-attr">— Karan Gupta</span>
+      </div>
+
+      <div class="skills-list">
+        <div class="skill-check">Transformer architecture from scratch</div>
+        <div class="skill-check">RoPE / SwiGLU / RMSNorm implementation</div>
+        <div class="skill-check">Training pipeline management (94 checkpoints)</div>
+        <div class="skill-check">Neural network loss curve analysis</div>
+        <div class="skill-check">Multi-brain reasoning system design</div>
+        <div class="skill-check">Real-time ML training visualization (Swift)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 3 -->
+  <div class="level-card l3">
+    <div class="level-header">
+      <div class="level-badge">
+        <span>LVL</span>
+        <span class="lv-num">3</span>
+      </div>
+      <div class="level-title-block">
+        <h3>The Toolmaker — If It Slows You Down, Replace It</h3>
+        <div class="level-unlock">UNLOCK CONDITION: <span>When you realize the bottleneck is the process, not the tool</span></div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        The ULTRON Arsenal started with a simple observation: every repeated workflow is a liability. Karan studied 120+ open-source repositories, distilled the patterns, and built 26 CLI tools from scratch — each purpose-built for a job that had no good existing solution. The same debugging rigor that traced six-hour CI failures to four-line subprocess bugs informed how he built the RCA pattern engine: 126 failure taxonomies, formalized from real incidents, queryable at 2am.
+      </p>
+      <p>
+        The <strong>Jingwoo CLI</strong> is the flagship: 55+ commands spanning investigation pipelines, knowledge base search, device control, and RCA workflows. The KB it queries isn't external — he built that too: <strong>58 services mapped, 1,382 API endpoints indexed, 211 error codes catalogued</strong>. When something breaks at 2am, the knowledge is queryable, not locked in someone's head.
+      </p>
+      <p>
+        The <strong>Monarch CLI</strong> handles code intelligence — AST analysis and CLI code generation via its Arise and Genjutsu modes (28,000+ LOC of code intelligence infrastructure). The remaining 18 tools cover security scanning (13 modules), OSINT recon, infrastructure health, performance analysis, threat detection, agent spawning, communications routing, diagram generation, compliance, and financial tracking. The whole arsenal emerged from a single principle: automate the thinking that doesn't require thinking, so the thinking that does gets your full attention.
+      </p>
+
+      <div class="quote-block">
+        <p>If you're doing the same analysis three times, the fourth time you should have a script for it. Not because you're lazy — because the script doesn't misread the output at midnight. The script never forgets the rule.</p>
+        <span class="quote-attr">— Karan Gupta</span>
+      </div>
+
+      <div class="skills-list">
+        <div class="skill-check">CLI tool architecture (Python, Bash, Swift)</div>
+        <div class="skill-check">120+ OSS repos studied for patterns</div>
+        <div class="skill-check">Knowledge base construction (58 services)</div>
+        <div class="skill-check">AST-based code intelligence (Monarch)</div>
+        <div class="skill-check">RCA pattern formalization (126 patterns)</div>
+        <div class="skill-check">Security scanning (13-module toolkit)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 4 -->
+  <div class="level-card l4">
+    <div class="level-header">
+      <div class="level-badge">
+        <span>LVL</span>
+        <span class="lv-num">4</span>
+      </div>
+      <div class="level-title-block">
+        <h3>The Infrastructure — Keep It Alive, Keep It Learning</h3>
+        <div class="level-unlock">UNLOCK CONDITION: <span>When "it works on my machine" becomes "it works, forever, automatically"</span></div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        The <strong>Cognition Core</strong> (running on port :8100) holds 44,000+ episodic memories, 205 semantic memories, 72 learned instincts, and a 67MB cognitive database with smart decay — memories that matter persist, memories that don't fade. The system accumulates expertise from every debugging session, every infrastructure decision, every training run. <code>TRAINING_PHASE=true</code>: no decay during active learning. Every interaction is a training signal.
+      </p>
+      <p>
+        The <strong>LIFE Enclosure</strong> keeps all of this alive: <code>kqueue</code>-based process monitoring, <code>sandbox-exec</code> for isolation, <code>launchd</code> for persistence. The activity observer (codename: Death) tracks all system activity via <code>CGEventTap</code> — it knows when processes idle, when they spike, when they need intervention. Process immortality isn't a metaphor; it's a technical specification. The system restarts itself. It does not forget.
+      </p>
+      <p>
+        47 infrastructure scripts (9,677 LOC) handle learning daemons, memory bridge operations, offline queuing for failed writes, and 26 keychain-managed credentials. The <strong>6 auto-learning hooks</strong> mean no learning is deferred — SessionStart, SessionEnd, PostToolUse (file edits, reads, MCP interactions) all fire automatically. The system's knowledge compounds whether or not anyone is watching.
+      </p>
+
+      <div class="quote-block">
+        <p>The hardest part wasn't building the memory system. It was making sure it stayed running — through crashes, sleep cycles, OS updates, everything. Process immortality is an infrastructure problem, not an AI problem. You solve it the same way: systematically.</p>
+        <span class="quote-attr">— Karan Gupta</span>
+      </div>
+
+      <div class="skills-list">
+        <div class="skill-check">Process immortality (kqueue + sandbox-exec + launchd)</div>
+        <div class="skill-check">Cognition Core · episodic/semantic/behavioral memory</div>
+        <div class="skill-check">Smart decay &amp; reinforcement learning integration</div>
+        <div class="skill-check">CGEventTap activity monitoring (macOS)</div>
+        <div class="skill-check">6 auto-learning hooks · offline queue</div>
+        <div class="skill-check">26 keychain-managed credential system</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level 5 -->
+  <div class="level-card l5">
+    <div class="level-header">
+      <div class="level-badge">
+        <span>LVL</span>
+        <span class="lv-num">5</span>
+      </div>
+      <div class="level-title-block">
+        <h3>The Meta-System — Everything Connects</h3>
+        <div class="level-unlock">UNLOCK CONDITION: <span>When the system starts generating its own knowledge without being asked</span></div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        Level 5 is not a new feature. It is what happens when every previous layer is real and connected. The Singularity Engine routes decisions across 23 system organs — senses, arms, memory, spine — each one a real subsystem with a specific job. 10 active personas each have their own communication protocol, threading rules, and behavioral constraints. The Mind Palace's divergence → convergence → ultra-instinct pipeline means no raw input ever stays unprocessed. The system generates its own operational truth.
+      </p>
+      <p>
+        The daily AI landscape scanner runs automatically across arXiv, GitHub Trending, and community forums — 42 intelligence reports generated so far, zero human prompts required. Monarch's code intelligence layer means the system can analyze its own codebase, generate new CLI tools, and patch its own behavior via the Genjutsu mode. The ULTRON Arsenal's security scanner runs 13 modules on demand. None of this was wired together at the end — it was designed as a connected body from the start.
+      </p>
+      <p>
+        The end state: a system that debugs itself, learns from every session, maps its own knowledge, routes its own communications, and improves its own architecture. The gap between "software that runs" and "software that thinks" turns out to be mostly an infrastructure problem. Karan closed that gap one subsystem at a time.
+      </p>
+
+      <div class="quote-block">
+        <p>The point was never to build something impressive. The point was to build something that actually helps — that remembers what broke last time, that knows which RCA pattern matches this new error, that handles the routine stuff so I can think about the hard stuff. The fact that it ended up being a 49 GB neural system is just what "actually helps" required.</p>
+        <span class="quote-attr">— Karan Gupta</span>
+      </div>
+
+      <div class="skills-list">
+        <div class="skill-check">23-organ Singularity body architecture</div>
+        <div class="skill-check">10 active personas · DM threading protocol</div>
+        <div class="skill-check">Autonomous AI landscape intelligence scanning</div>
+        <div class="skill-check">Self-modifying CLI generation (Monarch Genjutsu)</div>
+        <div class="skill-check">Multi-channel persona routing (Slack / WhatsApp / Telegram)</div>
+        <div class="skill-check">Mind Palace divergence→convergence→ultra-instinct pipeline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BUILD LOG ── -->
+  <div class="build-log">
+    <div class="build-log-header">
+      <h2>What Got Built</h2>
+      <p>// the loop that drives it</p>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-node fn-perceive">
+        <div class="flow-node-icon">perceive</div>
+        <div class="flow-node-sub">senses</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-think">
+        <div class="flow-node-icon">think</div>
+        <div class="flow-node-sub">brains</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-act">
+        <div class="flow-node-icon">act</div>
+        <div class="flow-node-sub">arms</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-learn">
+        <div class="flow-node-icon">learn</div>
+        <div class="flow-node-sub">memory</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node fn-repeat">
+        <div class="flow-node-icon">repeat</div>
+        <div class="flow-node-sub">indefinitely</div>
+      </div>
+    </div>
+
+    <div class="build-entries">
+
+      <div class="build-entry">
+        <div class="build-entry-meta">
+          <div class="build-entry-tag t-trained">trained</div>
+          <div class="build-entry-year">BrainV2</div>
+        </div>
+        <div class="build-entry-content">
+          <h4>117M parameter transformer — on a MacBook Air M1</h4>
+          <p>RoPE positional encoding, SwiGLU activations, RMSNorm. 12 layers. Loss came down from 8.3 to 0.51 across 94 saved checkpoints. <strong>Not a fine-tune. A training run.</strong> The constraint of a single M1 meant every architectural choice had to be justified before training started.</p>
+        </div>
+      </div>
+
+      <div class="build-entry">
+        <div class="build-entry-meta">
+          <div class="build-entry-tag t-built">built</div>
+          <div class="build-entry-year">Arsenal</div>
+        </div>
+        <div class="build-entry-content">
+          <h4>26 CLI tools from first principles — 81,516 LOC across the full arsenal</h4>
+          <p>Every repeated workflow is a liability. Each tool was built because the existing solution wasn't good enough.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin-top:16px;">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">monarch</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Code intelligence — AST analysis, CLI generation (28.7K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">scan</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Security scanning — XSS, SQLi, secrets, API fuzzing, SAST (6.5K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">jingwoo</span>
+              <span style="font-size:12px;color:var(--text-secondary);">LT debugging — 55+ cmds, investigation pipelines, KB search (3.5K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">sharingan</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Vulnerability scanner — network recon, CVE detection (3.9K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">canvas</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Creative engine — diagrams, slides, charts, wireframes (2.2K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">guardian</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Compliance — SBOM, license scanning, vulnerability audit (1.9K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">sentinel</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Infra health — incidents, chaos injection, load testing (2.0K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">recon</span>
+              <span style="font-size:12px;color:var(--text-secondary);">OSINT — subdomain discovery, port scanning, TLS analysis (1.9K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">atlas</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Knowledge graphs — entity extraction, taxonomy, wiki generation (1.9K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">aegis</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Threat defense — phishing, typosquatting, prompt injection (1.8K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">herald</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Communication routing — scheduling, templates, rate limiting (1.8K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">turbo</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Performance — benchmarking, flamegraphs, regression detection (1.8K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">forge</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Agent spawning — skill creation, sandbox execution (1.7K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">ledger</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Audit trail — checkpoints, rollback, risk assessment (1.7K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">engram</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Temporal memory — learning, recall, compression, procedures (1.5K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">third-eye</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Self-awareness — drift detection, loop detection, introspection (1.5K LOC)</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:8px 12px;background:rgba(232,135,74,0.06);border:1px solid rgba(232,135,74,0.15);border-radius:8px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);min-width:100px;">vault</span>
+              <span style="font-size:12px;color:var(--text-secondary);">Financial intelligence — stock/crypto prices, portfolio tracking (1.4K LOC)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="build-entry">
+        <div class="build-entry-meta">
+          <div class="build-entry-tag t-built">built</div>
+          <div class="build-entry-year">Infra</div>
+        </div>
+        <div class="build-entry-content">
+          <h4>Process immortality — the system restarts itself, through anything</h4>
+          <p><code style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(90,63,46,0.3);border:1px solid rgba(90,63,46,0.5);border-radius:3px;padding:1px 5px;color:var(--accent)">kqueue</code> process monitoring, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(90,63,46,0.3);border:1px solid rgba(90,63,46,0.5);border-radius:3px;padding:1px 5px;color:var(--accent)">sandbox-exec</code> isolation, <code style="font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(90,63,46,0.3);border:1px solid rgba(90,63,46,0.5);border-radius:3px;padding:1px 5px;color:var(--accent)">launchd</code> persistence. An activity observer that watches every process via <strong>CGEventTap</strong>. 6 auto-learning hooks that fire on every session, every file edit, every tool call. The system accumulates knowledge whether or not anyone is watching.</p>
+        </div>
+      </div>
+
+      <div class="build-entry">
+        <div class="build-entry-meta">
+          <div class="build-entry-tag t-formalized">formalized</div>
+          <div class="build-entry-year">KB</div>
+        </div>
+        <div class="build-entry-content">
+          <h4>126 failure patterns — extracted from real incidents, queryable at 2am</h4>
+          <p>58 services mapped. 1,382 API endpoints indexed. 211 error codes catalogued. The knowledge base didn't come from documentation — it came from debugging sessions, incident postmortems, and six-hour CI failures traced to four-line subprocess bugs. <strong>Pattern recognition at machine speed, from human experience.</strong></p>
+        </div>
+      </div>
+
+      <div class="build-entry">
+        <div class="build-entry-meta">
+          <div class="build-entry-tag t-shipped">shipped</div>
+          <div class="build-entry-year">6 frameworks</div>
+        </div>
+        <div class="build-entry-content">
+          <h4>Deep expertise across six test automation frameworks</h4>
+          <p>Selenium, Cypress, Playwright, Appium, Espresso, XCUITest — not just usage-level knowledge, but the kind where you debug the framework itself when tests fail for non-obvious reasons. Subprocess pipe deadlocks, thread-local initialization gaps, W3C capability mismatches across driver versions. The debugging rigor that traces a six-hour CI failure to a four-line subprocess bug is the same rigor that shaped how every system here handles failure.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tools-used">
+      <div class="tools-used-label">// what it's built with</div>
+      <div class="tools-grid">
+        <span class="tool-pill">Python</span>
+        <span class="tool-pill">Swift / SwiftUI</span>
+        <span class="tool-pill">Java</span>
+        <span class="tool-pill">Bash</span>
+        <span class="tool-pill">PyTorch</span>
+        <span class="tool-pill">SQLite</span>
+        <span class="tool-pill">Selenium</span>
+        <span class="tool-pill">Playwright</span>
+        <span class="tool-pill">Appium</span>
+        <span class="tool-pill">XCUITest</span>
+        <span class="tool-pill">Espresso</span>
+        <span class="tool-pill">kqueue</span>
+        <span class="tool-pill">launchd</span>
+        <span class="tool-pill">CGEventTap</span>
+        <span class="tool-pill">Transformers</span>
+        <span class="tool-pill">RoPE / SwiGLU</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── CLOSING QUOTE ── -->
+  <div class="closing-block">
+    <div class="closing-quote">
+      "The system learns from every interaction. Every debug session, every tool call, every wrong answer feeds back in. That's the whole point —
+      <em>the work is the training data.</em>"
+    </div>
+    <div class="closing-attr">— KARAN GUPTA · SYSTEMS ARCHITECT &amp; BUILDER</div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="cta-block">
+    <h2>Build something that keeps getting better.</h2>
+    <p>
+      If you're working on autonomous systems, AI architectures trained without a GPU cluster, or infrastructure that learns from itself — let's think about it together.
+    </p>
+    <div class="cta-buttons">
+      <a href="https://www.linkedin.com/in/karan-gupta-68847b137" class="btn btn-primary" target="_blank">Connect on LinkedIn</a>
+      <a href="https://github.com/UchihaMaadaraa" class="btn btn-ghost" target="_blank">See the Singularity System</a>
+      <a href="https://github.com/UchihaMaadaraa" class="btn btn-ghost" target="_blank">Browse the Code</a>
+    </div>
+    <div class="cta-contact">
+      Not a recruiter? Even better. — Karan Gupta
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+</body>
+</html>
